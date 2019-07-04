@@ -1,3 +1,4 @@
+// https://www.codechef.com/LTIME73A/problems/QRYLAND
 #include<bits/stdc++.h>
 
 using namespace std;

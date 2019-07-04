@@ -22,11 +22,11 @@ int main()
     cin.tie(NULL); cout.tie(NULL);
     freopen("input.txt", "w", stdout);
     ll t;
-    t=10;
+    t=400000;
     cout<<t<<endl;
     while(t--){   
         int n=rand()%10+1;
-        cout<<n<<" ";
+        cout<<n<<'\n';
     }
     return 0;
 }

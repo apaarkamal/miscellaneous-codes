@@ -21,11 +21,11 @@ void the_martian(){
 }
 
 const int N=10005,M=14;
-int ptr=0,chain_no=0;
+int ptr=0,chain_no=0,ans=-1;
 
 vector<P> gr[N],edges;
 int subsize[N],dep[N],Par[N][M];
-int chain_head[N],chain_Ind[N],chain_size[N];
+int chain_head[N],chain_Ind[N],chain_size[N],at_that_in_node[N];
 int Base_array[N],pos_in_Base[N];
 
 class segmenttree
@@ -40,7 +40,7 @@ public:
         int mid=(l+r)/2;
         build(l,mid,node*2+1);
         build(mid+1,r,node*2+2);
-        st[node]=max(st[2*node+1],st[2*node+2]);
+        st[node]=(st[2*node+1]+st[2*node+2]);
     }
 
     void update(int l,int r,int indup,int val,int node){
@@ -57,13 +57,13 @@ public:
             else{
                 update(mid+1,r,indup,val,node*2+2);
             }
-            st[node]=max(st[2*node+1],st[2*node+2]);  
+            st[node]=(st[2*node+1]+st[2*node+2]);  
         }
     }
 
     int query(int si,int se,int l,int r,int node){
         if(se<l||si>r||l>r){
-            return -1;
+            return 0;
         }
         if(si>=l&&se<=r){
             return st[node];
@@ -71,7 +71,29 @@ public:
         int mid=(si+se)/2;
         int q1=query(si,mid,l,r,node*2+1);
         int q2=query(mid+1,se,l,r,node*2+2);
-        return max(q1,q2);
+        return q1+q2;
+    }
+
+    void go(int l,int r){
+        if(l==r){
+            if(Base_array[l]==1){
+                ans=at_that_in_node[l];
+            }
+            return ;
+        }
+        int mid=(l+r)/2;
+        int sum1=query(0,ptr-1,l,mid,0);
+        int sum2=query(0,ptr-1,mid+1,r,0);
+        if(sum1==0&&sum2==0){
+            return;
+        }
+        else if(sum1){
+            go(l,mid);
+        }
+        else{
+            go(mid+1,r);
+        }
+        return ;
     }
 }tr;
 
@@ -81,6 +103,7 @@ void HLD(int cur,int par,int weight){
     }
     chain_Ind[cur]=chain_no;
     pos_in_Base[cur]=ptr;
+    at_that_in_node[ptr]=cur;
     Base_array[ptr++]=weight;
     chain_size[chain_no]++;
 
@@ -102,39 +125,6 @@ void HLD(int cur,int par,int weight){
     }
 }
 
-int LCA(int u,int v){
-    if(dep[u]<dep[v]){
-        swap(u,v);
-    }
-    int diff=dep[u]-dep[v];
-    for(int i=M-1;i>=0;i--){
-        if(diff&(1<<i)){
-            u=Par[u][i];
-        }    
-    }
-    if(u==v) return v;
-    for(int i=M-1;i>=0;i--){
-        if(Par[u][i]!=Par[v][i]){
-            u=Par[u][i];
-            v=Par[v][i];
-        }  
-    }
-    return Par[u][0];
-}
-
-
-void cal_sparse_matrix(int cur,int par){
-    Par[cur][0]=par;
-    for(int i=1;i<M;i++){
-        Par[cur][i]=Par[Par[cur][i-1]][i-1];    
-    }
-    for(auto x:gr[cur]){
-        if(par!=x.F){
-            cal_sparse_matrix(x.F,cur);
-        }            
-    }
-}
-
 void dfs(int cur,int par){
     subsize[cur]=1;
     dep[cur]=dep[par]+1;
@@ -147,86 +137,56 @@ void dfs(int cur,int par){
 }
 
 void edge(){
-    int x,y,w;
-    cin>>x>>y>>w;
+    int x,y,w=0;
+    cin>>x>>y;
     gr[x].pb({y,w});
     gr[y].pb({x,w});
     edges.pb({x,y});
 }
 
-int query_up(int u,int v){
-    int uchain=chain_Ind[u],vchain=chain_Ind[v],ans=0;
+void query_up(int u,int v){
+    ans=-1;
+    int uchain=chain_Ind[u],vchain=chain_Ind[v];
     while(1){
         uchain=chain_Ind[u];
         if(uchain==vchain){
-            if(v==u) break;
-            ans=max(ans,tr.query(0,ptr-1,pos_in_Base[v]+1,pos_in_Base[u],0));
+            tr.go(pos_in_Base[v],pos_in_Base[u]);
             break;
         }
         else{
-            ans=max(ans,tr.query(0,ptr-1,pos_in_Base[chain_head[uchain]],pos_in_Base[u],0));
+            tr.go(pos_in_Base[chain_head[uchain]],pos_in_Base[u]);
             u=Par[chain_head[uchain]][0];
         }
     }
-    return ans;
-}
-
-void clr(int n){
-    edges.clear();
-    for(int i=0;i<=n;i++){
-        gr[i].clear();
-        subsize[i]=0;   
-        dep[i]=0;   
-        chain_head[i]=0;   
-        chain_Ind[i]=0;   
-        chain_size[i]=0;   
-        chain_size[i]=0;   
-        Base_array[i]=0;   
-        pos_in_Base[i]=0;   
-        for(int j=0;j<M;j++){
-            Par[i][j]=0;           
-        }
-    }
-    ptr=0;
 }
 
 int32_t main()
 {
     the_martian();
-    int t;cin>>t;while(t--)
+    // int t;cin>>t;while(t--)
     {
-        int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        cin>>n;
+        int i,j,k,n,m,cnt=0,sum=0;
+        cin>>n>>m;
         for(i=1;i<n;i++){
             edge();                
         }
         ptr=0;
         chain_no=0;
         dfs(1,0);
-        cal_sparse_matrix(1,0);
         HLD(1,0,0);
         tr.build(0,ptr-1,0);
 
-        while(1){
-            string s;
-            cin>>s;
-            if(s[0]=='Q'){
-                int u,v;
-                cin>>u>>v;
-                int lca=LCA(u,v);
-                cout<<max(query_up(u,lca),query_up(v,lca))<<'\n';
-            }
-            else if(s[0]=='C'){
-                cin>>j>>k;
-                j--;
-                int u=edges[j].F,v=edges[j].S;
-                if(Par[u][0]!=v) swap(u,v);
-                tr.update(0,ptr-1,pos_in_Base[u],k,0);
+        while(m--){
+            int t,u;
+            cin>>t>>u;
+            if(t){
+                query_up(u,1);
+                cout<<ans<<'\n';
             }
             else{
-                break;
+                int pos=pos_in_Base[u];
+                tr.update(0,ptr-1,pos,1-Base_array[pos],0);
             }
         }
-        clr(n);
     }
 }

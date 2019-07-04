@@ -1,3 +1,5 @@
+// subtrees and paths hackerrank 
+// although giving tle in few cases
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -10,6 +12,18 @@ using namespace std;
 #define V vector
 #define pb push_back
 
+
+#define db(...) __f(#__VA_ARGS__, __VA_ARGS__)
+
+template <typename Arg1>
+void __f(const char* name, Arg1&& arg1) { cerr << name << " : " << arg1 <<'\n'; }
+template <typename Arg1, typename... Args>
+void __f(const char* names, Arg1&& arg1, Args&&... args) {
+    const char* comma = strchr(names + 1, ',');
+    cerr.write(names, comma - names) << " : " << arg1 << " | "; __f(comma + 1, args...);
+}
+
+
 void the_martian(){
     ios_base:: sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
@@ -20,57 +34,66 @@ void the_martian(){
     #endif
 }
 
-const int N=10005,M=14;
+const int N=100005,M=18;
 int ptr=0,chain_no=0;
 
 vector<P> gr[N],edges;
-int subsize[N],dep[N],Par[N][M];
+int subsize[N],dep[N],Par[N][M],tme=0,tin[N],tout[N];
 int chain_head[N],chain_Ind[N],chain_size[N];
 int Base_array[N],pos_in_Base[N];
 
-class segmenttree
+class segmenttreewithlazy
 {
 public:
-    int st[N*4];
-    void build(int l,int r,int node){
-        if(l==r){
-            st[node]=Base_array[l];
-            return;
+    int st[N*4],lazy[N*4];
+
+    void update_range(int start,int end,int l,int r,int val,int node){
+        if(lazy[node]!=0){
+            //update lazy node and forward value to children
+            st[node]+=lazy[node];
+            if(start!=end){
+                lazy[2*node+1]+=lazy[node];
+                lazy[2*node+2]+=lazy[node];
+            }
+            lazy[node]=0;
         }
-        int mid=(l+r)/2;
-        build(l,mid,node*2+1);
-        build(mid+1,r,node*2+2);
+        if(start>end||end<l||start>r){//no overlap
+            return ;
+        }
+        if(start>=l&&end<=r){//complete overlap
+            //update stnode node and forward value to children
+            st[node]+=val;
+            if(start!=end){
+                lazy[2*node+1]+=val;
+                lazy[2*node+2]+=val;
+            }
+            return ;
+        }
+        int mid=(start+end)/2;
+        update_range(start,mid,l,r,val,node*2+1);
+        update_range(mid+1,end,l,r,val,node*2+2);
         st[node]=max(st[2*node+1],st[2*node+2]);
     }
 
-    void update(int l,int r,int indup,int val,int node){
-        if(l==r){
-            Base_array[l]=val;
-            st[node]=val;
-            return;
+    int query(int start,int end,int l,int r,int node){
+        if(start>end||end<l||start>r){
+            return INT_MIN;
         }
-        else{
-            int mid=(l+r)/2;
-            if(indup>=l&&indup<=mid){
-                update(l,mid,indup,val,node*2+1);
+        if(lazy[node]!=0){
+            //update lazy node and forward value to children
+            st[node]+=lazy[node];
+            if(start!=end){
+                lazy[2*node+1]+=lazy[node];
+                lazy[2*node+2]+=lazy[node];
             }
-            else{
-                update(mid+1,r,indup,val,node*2+2);
-            }
-            st[node]=max(st[2*node+1],st[2*node+2]);  
+            lazy[node]=0;
         }
-    }
-
-    int query(int si,int se,int l,int r,int node){
-        if(se<l||si>r||l>r){
-            return -1;
-        }
-        if(si>=l&&se<=r){
+        if(start>=l&&end<=r){
             return st[node];
         }
-        int mid=(si+se)/2;
-        int q1=query(si,mid,l,r,node*2+1);
-        int q2=query(mid+1,se,l,r,node*2+2);
+        int mid=(start+end)/2;
+        int q1=query(start,mid,l,r,node*2+1);
+        int q2=query(mid+1,end,l,r,node*2+2);
         return max(q1,q2);
     }
 }tr;
@@ -138,29 +161,34 @@ void cal_sparse_matrix(int cur,int par){
 void dfs(int cur,int par){
     subsize[cur]=1;
     dep[cur]=dep[par]+1;
+    tin[cur]=++tme;
     for(auto x:gr[cur]){
         if(x.F!=par){
             dfs(x.F,cur);
             subsize[cur]+=subsize[x.F];
         }
     }
+    tout[cur]=tme;
 }
 
 void edge(){
-    int x,y,w;
-    cin>>x>>y>>w;
+    int x,y,w=0;
+    cin>>x>>y;
     gr[x].pb({y,w});
     gr[y].pb({x,w});
     edges.pb({x,y});
 }
 
 int query_up(int u,int v){
-    int uchain=chain_Ind[u],vchain=chain_Ind[v],ans=0;
+    int uchain=chain_Ind[u],vchain=chain_Ind[v],ans=INT_MIN;
     while(1){
         uchain=chain_Ind[u];
         if(uchain==vchain){
-            if(v==u) break;
-            ans=max(ans,tr.query(0,ptr-1,pos_in_Base[v]+1,pos_in_Base[u],0));
+            if(u==v){
+                ans=max(ans,tr.query(0,ptr-1,pos_in_Base[u],pos_in_Base[u],0));
+                break;
+            }
+            ans=max(ans,tr.query(0,ptr-1,pos_in_Base[v],pos_in_Base[u],0));
             break;
         }
         else{
@@ -171,29 +199,29 @@ int query_up(int u,int v){
     return ans;
 }
 
-void clr(int n){
-    edges.clear();
-    for(int i=0;i<=n;i++){
-        gr[i].clear();
-        subsize[i]=0;   
-        dep[i]=0;   
-        chain_head[i]=0;   
-        chain_Ind[i]=0;   
-        chain_size[i]=0;   
-        chain_size[i]=0;   
-        Base_array[i]=0;   
-        pos_in_Base[i]=0;   
-        for(int j=0;j<M;j++){
-            Par[i][j]=0;           
+bool is_ancestor(int u,int v){
+    //is u ancestor of v?
+    return tin[u]<=tin[v] && tout[u]>=tout[v];
+}
+
+void query_update(int u,int k){
+    int uchain=chain_Ind[u];
+    for(int i=0;i<=chain_no;i++){
+        int v=chain_head[i];
+        int vchain=chain_Ind[v];
+        if(uchain==vchain){
+            tr.update_range(0,ptr-1,pos_in_Base[u],pos_in_Base[v]+chain_size[i]-1,k,0);
+        }
+        else if(is_ancestor(u,v)){
+            tr.update_range(0,ptr-1,pos_in_Base[v],pos_in_Base[v]+chain_size[i]-1,k,0);
         }
     }
-    ptr=0;
 }
 
 int32_t main()
 {
     the_martian();
-    int t;cin>>t;while(t--)
+    // int t;cin>>t;while(t--)
     {
         int i,j,k,n,m,ans=0,cnt=0,sum=0;
         cin>>n;
@@ -205,28 +233,21 @@ int32_t main()
         dfs(1,0);
         cal_sparse_matrix(1,0);
         HLD(1,0,0);
-        tr.build(0,ptr-1,0);
-
-        while(1){
+        cin>>m;
+        while(m--){
             string s;
             cin>>s;
-            if(s[0]=='Q'){
+            if(s=="max"){
                 int u,v;
                 cin>>u>>v;
                 int lca=LCA(u,v);
                 cout<<max(query_up(u,lca),query_up(v,lca))<<'\n';
             }
-            else if(s[0]=='C'){
-                cin>>j>>k;
-                j--;
-                int u=edges[j].F,v=edges[j].S;
-                if(Par[u][0]!=v) swap(u,v);
-                tr.update(0,ptr-1,pos_in_Base[u],k,0);
-            }
-            else{
-                break;
+            else {
+                int u;
+                cin>>u>>k;
+                query_update(u,k);
             }
         }
-        clr(n);
     }
 }

@@ -14,6 +14,8 @@ int binsearch(int lo, int hi)
 
 		ll lf=-1,rt=1e15;
         while(lf+1<rt){
+        else{
+            ans
             ll mid=(lf+rt)/2;
             ld ansd=(ld)(sum+(mid*k))/(ld)(n+mid);
             if((ll)(ansd+0.5)>=k){
