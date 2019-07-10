@@ -26,7 +26,7 @@ void knight(int x,int y,int cnt){
             grid[xx][yy]=0;
             knight(xx,yy,cnt+1);
             grid[xx][yy]=1;
-        }        
+        } 
     }
 }
 

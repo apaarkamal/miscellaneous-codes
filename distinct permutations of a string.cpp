@@ -17,6 +17,7 @@ void permutations(string s,int cur,int n){
         cout<<s<<'\n';
         return ;
     }
+    cout<<s<<'\n';
     int i;
     for(i=cur;i<n;i++){
         if(shouldswap(s,cur,i)){

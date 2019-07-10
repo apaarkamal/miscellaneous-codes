@@ -11,6 +11,8 @@ public:
         next=NULL;
     }
 };
+// create, print, reverse recursion, reverse iterative , dupli
+// merge recursion, merge sort, insertion sort
 Node* createLL(int t)
 {
     Node* head=NULL;
@@ -338,6 +340,7 @@ Node* mergeSort(Node* a){
     a = mergeSort(a);
     b = mergeSort(b);
     Node* ans = mergeLL(a, b);
+    return ans;
 }
 int main()
 {
