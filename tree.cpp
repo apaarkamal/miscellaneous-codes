@@ -26,12 +26,14 @@ node* buildTree(node*root){
     root->right = buildTree(root->right);
     return root;
 }
+
 int countNodes(node*root){
     if(root==NULL){
         return 0;
     }
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
+
 int height(node*root){
     if(root==NULL){
         return 0;
@@ -113,6 +115,7 @@ void levelOrderPrint(node*root){
     cout<<endl;
 
 }
+
 //O(n*n)
 int diameter(node*root){
     if(root==NULL){
@@ -176,6 +179,7 @@ bool areIdentical(node*root1,node*root2){
 
 }
 
+// RLR
 void preOrder(node*root){
     if(root==NULL){
         return;
@@ -185,6 +189,8 @@ void preOrder(node*root){
     preOrder(root->right);
 
 }
+
+// Left Root Right
 void inOrder(node*root){
     if(root==NULL){
         return;
@@ -193,6 +199,8 @@ void inOrder(node*root){
     cout<<root->data<<" ";
     inOrder(root->right);
 }
+
+// Left Right Root
 void postOrder(node*root){
     if(root==NULL){
         return;
@@ -206,7 +214,9 @@ ostream& operator<<(ostream&os,node*root){
     levelOrderPrint(root);
     return os;
 }
+
 //------------------------------------BST
+
 node* insertInBST(node*root,int d){
     if(root==NULL){
         return new node(d);

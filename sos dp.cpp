@@ -1,3 +1,8 @@
+// SOS dp tells number of i<=n with i&n==i
+// number of fully covered subsets
+// remeber i=0101 and n=0100
+// this will not be included 
+// for such case take n^(N-1) and count all of its subsets
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -32,25 +37,11 @@ void __f(const char* names, Arg1&& arg1, Args&&... args) {
 }
 
 
-const int N=(1<<20),M=20;
-const int K=(1<<20)-1;
-
-const int mod = 1000000007;
-inline int add(int x, int y){ x += y; if(x >= mod) x -= mod; return x;}
-inline int sub(int x, int y){ x -= y; if(x < 0) x += mod; return x;}
-inline int mul(int x, int y){ return (((int) x) * y) % mod;}
-inline int powr(int a, int b){
-    int x = 1 % mod;
-    while(b){
-        if(b & 1) x = mul(x, a);
-        a = mul(a, a);
-        b >>= 1;
-    }
-    return x;
-}
-inline int inv(int a){ return powr(a, mod - 2);}
+const int N=(1<<24),M=24;
+const int K=(1<<24)-1;
 
 int dp[N];
+
 
 int32_t main()
 {
@@ -58,17 +49,11 @@ int32_t main()
     // int t;cin>>t;while(t--)
     {
         int i,j,k,n,m,ans=0,sum=0,cnt=0;
-        cin>>n>>m;
-        int mask=0;
-        for(i=0;i<=n;i++){
-            string s;
-            cin>>s;
-            mask=0;
-            for(j=0;j<s.size();j++){
-                mask|=((s[j]=='1')<<j);
-            }
-            if(i==n) continue;
-            dp[mask]++;
+        cin>>n;
+        int a[n];
+        for(i=0;i<n;i++){
+            cin>>a[i];
+            dp[a[i]]++;
         }
         for(i=0;i<M;i++){
             for(j=0;j<N;j++){
@@ -77,17 +62,5 @@ int32_t main()
                 }                       
             }        
         }
-        for(i=0;i<=mask;i++){
-            if((i&mask)==i){
-                if(__builtin_popcount(i^mask)&1){
-                    ans=sub(ans,(powr(2,dp[i])-1+mod)%mod);
-                }
-                else{
-                    ans=add(ans,(powr(2,dp[i])-1)%mod);
-                }
-            }
-            db(ans);
-        }
-        cout<<ans;
     }
 }
