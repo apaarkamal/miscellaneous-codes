@@ -1,0 +1,30 @@
+<snippet>
+	<content><![CDATA[
+vector<P> factors;
+void factorisation(int n){
+    int cnt=0;
+    while(n%2==0){
+        n/=2;
+        cnt++;
+    }
+    if(cnt) factors.pb({2,cnt});
+    for(int i=3;i*i<=n;i+=2){
+        if(n%i==0){
+            cnt=0;
+            while(n%i==0){
+                n/=i;
+                cnt++;
+            }                      
+            factors.pb({i,cnt});
+        }
+    }
+    if(n>1){
+        factors.pb({n,1});
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>factorisation</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

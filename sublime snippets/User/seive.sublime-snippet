@@ -1,0 +1,23 @@
+<snippet>
+	<content><![CDATA[
+int pr[N];
+vector<int> primes;
+
+void seive(){
+    int i,j;
+    for(i=2;i<N;i++){
+        if(!pr[i]){
+            primes.pb(i);
+            for(j=i;j<N;j+=i){
+                pr[j]++;
+            }
+        }
+    }
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>seive</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,3 +1,5 @@
+<snippet>
+	<content><![CDATA[
 const int mod = 1000000007;
 int fact[N], invfact[N];
 inline int add(int x, int y){ x += y; return x%mod;}
@@ -25,3 +27,9 @@ inline int C(int n, int k){
     if(n < k || k < 0) return 0;
     return mul(fact[n], mul(invfact[k], invfact[n - k]));
 }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>powr</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

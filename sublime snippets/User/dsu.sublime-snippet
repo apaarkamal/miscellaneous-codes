@@ -1,0 +1,30 @@
+<snippet>
+	<content><![CDATA[
+        
+vector<int> p,sz;
+p.resize(N);sz.resize(N,1);
+iota(p.begin(), p.end(), 0);
+
+inline int get(int x) {
+    return (x == p[x] ? x : (p[x] = get(p[x])));
+}
+
+inline void unite(int x, int y) {
+    x = get(x);
+    y = get(y);
+    if(sz[x]>sz[y]){
+        swap(x,y);
+    }
+    if (x != y) {
+        p[x] = y;
+        sz[y]+=sz[x];
+        sz[x]=0;
+    }
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dsu</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

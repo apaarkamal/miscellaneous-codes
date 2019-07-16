@@ -1,0 +1,36 @@
+<snippet>
+	<content><![CDATA[
+class BIT
+{
+public:
+    int a[N+1];
+    // bit.add(i,a[i]);
+    // sum=bit.sum(i);
+    void add(int x, int val)
+    {
+        x++;
+        while (x < N)
+        {
+            a[x] += val;
+            x += (x&-x);
+        }
+    }
+    int sum(int x)
+    {
+        int ret = 0;
+        x++;
+        while (x)
+        {
+            ret += a[x];
+            x -= (x&-x);
+        }
+        return ret;
+    }
+}bit;
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>fenwick</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
