@@ -28,94 +28,151 @@ void the_martian(){
     #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
-    // freopen("debug.txt", "w", stderr);
+    freopen("debug.txt", "w", stderr);
     #endif
 }
 
-const int N=200005;
+const int N=100005,M=18;
+int ptr=0,chain_no=0,ans=-1;
 
-const int mod = 1000000007;
-inline int add(int x, int y){ x += y; return x%mod;}
-inline int sub(int x, int y){ x -= y; x%=mod; x+=mod; return x%mod;}
-inline int mul(int x, int y){ return ( x * y) % mod;}
+vector<P> gr[N],edges;
+int subsize[N],dep[N],Par[N][M];
+int chain_head[N],chain_Ind[N],chain_size[N],node_in_base_array[N],is_chain_head[N];
+int Base_array[N],pos_in_Base[N];
+vector<int> all_chains_roottox[N];
 
-bool comp(pair<pair<int,int>,int> a,pair<pair<int,int>,int> b){
-    return a.F.S<b.F.S;
+set<int> S[M];
+
+void HLD(int cur,int par,int weight){
+    if(chain_head[chain_no]==0){
+        chain_head[chain_no]=cur;
+        is_chain_head[cur]=chain_no;
+    }
+    chain_Ind[cur]=chain_no;
+    pos_in_Base[cur]=ptr;
+    node_in_base_array[ptr]=cur;
+    Base_array[ptr++]=weight;//0
+    chain_size[chain_no]++;
+
+    int sp_chld=-1,w_sp_chld;
+    for(auto x:gr[cur]){
+        if(x.F!=par&&(sp_chld==-1||subsize[x.F]>subsize[sp_chld])){
+            sp_chld=x.F;
+            w_sp_chld=x.S;
+        }     
+    }
+    if(sp_chld!=-1){
+        HLD(sp_chld,cur,w_sp_chld);
+    }
+    for(auto x:gr[cur]){
+        if(x.F!=par&&x.F!=sp_chld){
+            chain_no++;
+            HLD(x.F,cur,x.S);
+        }     
+    }
 }
 
-class BIT
-{
-public:
-    int a[N+1];
-    // bit.add(i,a[i]);
-    // sum=bit.sum(i);
-    void add(int x, int val)
-    {
-        x++;
-        while (x < N)
-        {
-            a[x] += val;
-            a[x] %= mod;
-            x += (x&-x);
+void dfs(int cur,int par){
+    subsize[cur]=1;
+    dep[cur]=dep[par]+1;
+    for(auto x:gr[cur]){
+        if(x.F!=par){
+            dfs(x.F,cur);
+            subsize[cur]+=subsize[x.F];
         }
     }
-    int sum(int x)
-    {
-        int ret = 0;
-        x++;
-        while (x)
-        {
-            ret += a[x];
-            ret %= mod;
-            x -= (x&-x);
-        }
-        return ret;
+}
+
+void dfs2(int cur,int par){
+    for(auto x:all_chains_roottox[par]){
+        all_chains_roottox[cur].pb(x);
     }
-    void clear(){
-        for(int i=0;i<=N;i++){
-            a[i]=0;        
+    if(is_chain_head[cur]!=-1){
+        all_chains_roottox[cur].pb(is_chain_head[cur]);
+    }
+    for(auto x:gr[cur]){
+        if(x.F!=par){
+            dfs2(x.F,cur);
         }
     }
-}bit,bit1;
+}
+
+void edge(){
+    int x,y,w=0;
+    cin>>x>>y;
+    gr[x].pb({y,w});
+    gr[y].pb({x,w});
+    edges.pb({x,y});
+}
+
+void update(int u){
+    if(Base_array[pos_in_Base[u]]==1){
+        Base_array[pos_in_Base[u]]=0;
+        S[chain_Ind[u]].erase(pos_in_Base[u]);
+    }
+    else{
+        Base_array[pos_in_Base[u]]=1;
+        S[chain_Ind[u]].insert(pos_in_Base[u]);
+    }
+}
+
+int query_up(int u,int v){
+    int ans=-1;
+    while(1){
+        int uchain=chain_Ind[u],vchain=chain_Ind[v];
+        if(uchain==vchain){
+            if(S[uchain].empty()) break;
+            int cur=*S[uchain].begin();
+            if(cur<=pos_in_Base[u]){
+                ans=node_in_base_array[cur];   
+            }
+            break;
+        }
+        else{
+            if(S[uchain].empty()){
+                u=Par[chain_head[uchain]][0];
+            }
+            else{
+                int cur=*S[uchain].begin();
+                if(cur<=pos_in_Base[u]){
+                    ans=node_in_base_array[cur];
+                }
+                u=Par[chain_head[uchain]][0];
+            }
+        }
+    }
+    return ans;
+}
 
 int32_t main()
 {
     the_martian();
-    int t;cin>>t;while(t--)
+    // int t;cin>>t;while(t--)
     {
-        int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        cin>>n;
-        pair<pair<int,int>,int> a[n];
-        int b[n];
-        vector<int> v;
-        for(i=0;i<n;i++){
-            cin>>a[i].F.F;
-            v.pb(a[i].F.F);
-        }
-        for(i=0;i<n;i++){
-            cin>>a[i].F.S;
-        }
-        sort(v.begin(), v.end());
-        v.resize(unique(v.begin(), v.end())-v.begin());
-        for(i=0;i<n;i++){
-            a[i].S=lower_bound(v.begin(), v.end(),a[i].F.F)-v.begin()+1;                   
-        }
-        sort(a,a+n,comp);
-        bit.add(a[0].S,a[0].F.F);
-        bit1.add(a[0].S,1);
+        int i,j,k,n,m,cnt=0,sum=0;
+        cin>>n>>m;
         for(i=1;i<n;i++){
-            int bigsum=sub(bit.sum(N-3),bit.sum(a[i].S));
-            int bigcnt=sub(bit1.sum(N-3),bit1.sum(a[i].S));
-            int smsum=bit.sum(a[i].S-1);
-            int smcnt=bit1.sum(a[i].S-1);
-            cnt=sub(mul(a[i].F.F,smcnt),smsum);
-            cnt=add(cnt,sub(bigsum,mul(a[i].F.F,bigcnt)));
-            ans=add(ans,mul(cnt,a[i].F.S));
-            bit.add(a[i].S,a[i].F.F);
-            bit1.add(a[i].S,1);
+            edge();                
         }
-        cout<<ans%mod<<'\n';
-        bit.clear();
-        bit1.clear();
+        ptr=0;
+        chain_no=0;
+        dfs(1,0);
+        memset(is_chain_head,-1,sizeof(is_chain_head));
+        HLD(1,0,0);
+
+        //store all chains from 1 to x
+        dfs2(1,0);
+        //queries
+        while(m--){
+            int t,u;
+            cin>>t>>u;
+            if(t){
+                cout<<query_up(u,1)<<'\n';
+            }
+            else{
+                int pos=pos_in_Base[u];
+                update(u);
+            }
+        }
     }
 }

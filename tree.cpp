@@ -30,7 +30,7 @@ node* buildTree(node*root){
 int countNodes(node*root){
     if(root==NULL){
         return 0;
-    }
+    }   
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
 
@@ -161,8 +161,7 @@ void mirror(node *root){
     }
     swap(root->left,root->right);
     mirror(root->left);
-    mirror(root->right);
-
+    mirror(root->right); 
 }
 
 bool areIdentical(node*root1,node*root2){
@@ -176,7 +175,6 @@ bool areIdentical(node*root1,node*root2){
         return true;
     }
     return false;
-
 }
 
 // RLR
@@ -229,8 +227,8 @@ node* insertInBST(node*root,int d){
         root->right = insertInBST(root->right,d);
     }
     return root;
-
 }
+
 node* readBST(){
     int d;
     node*root = NULL;
@@ -241,6 +239,7 @@ node* readBST(){
     }
     return root;
 }
+
 // Complexity O(H) - Height lies between O(LogN) and O(N)
 node* search(node*root,int key){
     if(root==NULL){
@@ -249,7 +248,6 @@ node* search(node*root,int key){
     if(key==root->data){
         return root;
     }
-
     if(key<root->data){
         return search(root->left,key);
     }
@@ -257,6 +255,7 @@ node* search(node*root,int key){
         return search(root->right,key);
     }
 }
+
 node* findBiggest(node*root){
     node*temp = root;
     while(temp->right!=NULL){

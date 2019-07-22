@@ -22,36 +22,35 @@ void the_martian(){
 
 const int N=100005;
 
-vector<P> factors;
-void factorisation(int n){
-    int cnt=0;
-    while(n%2==0){
-        n/=2;
-        cnt++;
-    }
-    if(cnt) factors.pb({2,cnt});
-    for(int i=3;i*i<=n;i+=2){
-        if(n%i==0){
-            cnt=0;
-            while(n%i==0){
-                n/=i;
-                cnt++;
-            }                      
-            factors.pb({i,cnt});
+int pr[N];
+vector<int> primes;
+
+void seive(){
+    int i,j;
+    for(i=2;i<N;i++){
+        if(!pr[i]){
+            primes.pb(i);
+            for(j=i;j<N;j+=i){
+                pr[j]++;
+            }
         }
     }
-    if(n>1){
-        factors.pb({n,1});
-    }
 }
+
 
 int32_t main()
 {
     the_martian();
+    seive();
     // int t;cin>>t;while(t--)
     {
         int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        factorisation(10);
+        for(i=3;i<=1000;i++){
+            auto it=upper_bound(primes.begin(), primes.end(),i);
+            if(*it-i>=i/2){
+                cout<<i<<'\n';;
+            }
+        }
 
     }
 }
