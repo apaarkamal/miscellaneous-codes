@@ -7,50 +7,47 @@ using namespace std;
 #define F first
 #define S second
 #define P pair<int,int>
-#define V vector
 #define pb push_back
+#define db(x) cout <<#x<<": "<<x<<'\n';
 
-void the_martian(){
-    ios_base:: sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    freopen("debug.txt", "w", stderr);
-    #endif
-}
+const int N=2000005;
 
-const int N=100005;
-
-int pr[N];
-vector<int> primes;
-
-void seive(){
-    int i,j;
-    for(i=2;i<N;i++){
-        if(!pr[i]){
-            primes.pb(i);
-            for(j=i;j<N;j+=i){
-                pr[j]++;
-            }
-        }
-    }
-}
-
+vector<int> v[N];
 
 int32_t main()
 {
-    the_martian();
-    seive();
+    ios_base:: sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
     // int t;cin>>t;while(t--)
     {
         int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        for(i=3;i<=1000;i++){
-            auto it=upper_bound(primes.begin(), primes.end(),i);
-            if(*it-i>=i/2){
-                cout<<i<<'\n';;
-            }
+        cin>>n;
+        int a[n+1],pre[n+1];
+        a[0]=pre[0]=0;
+        for(i=1;i<=n;i++){
+            cin>>a[i];
+            pre[i]=a[i];
         }
-
+        for(i=1;i<=n;i++){
+            pre[i]^=pre[i-1];
+        }
+        int mx=-1;
+        for(i=0;i<=n;i++){
+            v[pre[i]].pb(i);            
+            mx=max(mx,pre[i]);
+        }
+        for(i=0;i<=mx;i++){
+            if(!v[i].empty()){
+                for(j=0;j<v[i].size();j++){
+                    ans+=v[i][j]*j;
+                    ans-=(v[i][j])*(v[i].size()-j-1);
+                }
+                ans-=((v[i].size())*(v[i].size()-1))/2;
+            }           
+        }
+        cout<<ans<<'\n';
+        for(i=0;i<=mx;i++){
+            v[i].clear();           
+        }
     }
 }

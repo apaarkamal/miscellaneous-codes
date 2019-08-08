@@ -26,3 +26,20 @@ int binsearch(int lo, int hi)
             }
         }
         cout<<rt;
+
+
+
+//////////////end points included
+            int lf=0,rt=min(n-x,m-y),ans=-1;
+            while(lf<=rt){
+                int mid=(lf+rt)/2;
+                // db(lf,rt,mid);
+                if(check(v,x,y,x+mid,y+mid)){
+                    ans=(mid+1)*(mid+1);
+                    rt=mid-1;
+                }
+                else{
+                    lf=mid+1;
+                }
+            }
+            cout<<ans<<'\n';

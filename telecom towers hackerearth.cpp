@@ -30,7 +30,7 @@ struct MaxFlow{
         gr[x].pb(ec);
         edges[ec++]={x,y,w};
         gr[y].pb(ec);
-        edges[ec++]={y,x,w};// for undirected replace 0 with w
+        edges[ec++]={y,x,0};// for undirected replace 0 with w
     }
     int BlockFlow(int cur,int cnt){//dfs
         if(cur==sink) return cnt;
@@ -127,7 +127,7 @@ int32_t main()
             }   
             else if(vis[i]==3){
                 G.add_edge(i,n+1,1);
-            }         
+            }
         }
         G.Dinic();
         cout<<G.flow;

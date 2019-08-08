@@ -1,3 +1,4 @@
+// https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/practice-problems/algorithm/shubham-and-grid-806c2c66/description/
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -20,7 +21,7 @@ void __f(const char* names, Arg1&& arg1, Args&&... args) {
 
 const int N=25;
 
-const int NN=50005,MM=500005;
+const int NN=5005,MM=500005;
 struct MaxFlow{
     vector<int> gr[NN];
     struct Edge{
@@ -35,7 +36,7 @@ struct MaxFlow{
         gr[x].pb(ec);
         edges[ec++]={x,y,w};
         gr[y].pb(ec);
-        edges[ec++]={y,x,w};// for undirected replace 0 with w
+        edges[ec++]={y,x,0};// for undirected replace 0 with w
     }
     int BlockFlow(int cur,int cnt){//dfs
         if(cur==sink) return cnt;
@@ -81,7 +82,7 @@ struct MaxFlow{
 
 int dx[4]={1,-1,0,0};
 int dy[4]={0,0,-1,1};
-int a[N][N],num[N][N],numd[N][N];
+int a[N][N],num[N][N];
 
 int32_t main()
 {
@@ -99,45 +100,20 @@ int32_t main()
                 num[i][j]=cnt++;
             }            
         }
-        for(i=1;i<=n;i++){
-            for(j=1;j<=m;j++){
-                numd[i][j]=cnt++;
-            }            
-        }
         G.init(cnt,0,cnt);
         for(i=1;i<=n;i++){
             for(j=1;j<=m;j++){
+                for(int k=0;k<4;k++){
+                    int xx=i+dx[k];        
+                    int yy=j+dy[k];
+                    if(xx<=n&&xx>=1&&yy<=m&&yy>=1&&a[xx][yy]==a[i][j]+1){
+                        G.add_edge(num[i][j],num[xx][yy],1);
+                    }        
+                }
                 if(a[i][j]==0){
                     G.add_edge(0,num[i][j],1);
-                    for(int k=0;k<4;k++){
-                        int xx=i+dx[k];        
-                        int yy=j+dy[k];
-                        if(xx<=n&&xx>=1&&yy<=m&&yy>=1&&a[xx][yy]==a[i][j]+1){
-                            G.add_edge(num[i][j],num[xx][yy],1);
-                        }        
-                    }
                 }
-                else if(a[i][j]==1){
-                    G.add_edge(num[i][j],numd[i][j],1);
-                    for(int k=0;k<4;k++){
-                        int xx=i+dx[k];        
-                        int yy=j+dy[k];
-                        if(xx<=n&&xx>=1&&yy<=m&&yy>=1&&a[xx][yy]==a[i][j]+1){
-                            G.add_edge(numd[i][j],num[xx][yy],1);
-                        }        
-                    }
-                }
-                else if(a[i][j]==2){
-                    G.add_edge(num[i][j],numd[i][j],1);
-                    for(int k=0;k<4;k++){
-                        int xx=i+dx[k];        
-                        int yy=j+dy[k];
-                        if(xx<=n&&xx>=1&&yy<=m&&yy>=1&&a[xx][yy]==a[i][j]+1){
-                            G.add_edge(numd[i][j],num[xx][yy],1);
-                        }        
-                    }
-                }
-                else if(a[i][j]==3){
+                if(a[i][j]==3){
                     G.add_edge(num[i][j],cnt,1);
                 }
             }            

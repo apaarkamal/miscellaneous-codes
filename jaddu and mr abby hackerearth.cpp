@@ -1,4 +1,3 @@
-// https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/practice-problems/algorithm/telecom-towers-06c98fbd/description/
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -11,11 +10,8 @@ using namespace std;
 #define pb push_back
 
 const int N=100005;
-int vis[N];
 
-vector<int> v[N];
-
-const int NN=50005,MM=500005;
+const int NN=30005,MM=500005;
 struct MaxFlow{
     vector<int> gr[NN];
     struct Edge{
@@ -30,7 +26,7 @@ struct MaxFlow{
         gr[x].pb(ec);
         edges[ec++]={x,y,w};
         gr[y].pb(ec);
-        edges[ec++]={y,x,w};// for undirected replace 0 with w
+        edges[ec++]={y,x,0};// for undirected replace 0 with w
     }
     int BlockFlow(int cur,int cnt){//dfs
         if(cur==sink) return cnt;
@@ -48,7 +44,7 @@ struct MaxFlow{
     }
     bool GetLevel() {// bfs
         int head = 0, tail = 0, i;
-        for (i = 0; i <= n; i++)Level[i] = -1;
+        for (i = 1; i <= n; i++)Level[i] = -1;
         Q[++tail] = source; Level[source] = 0;
         while (head < tail) {
             int cur = Q[++head];
@@ -74,15 +70,19 @@ struct MaxFlow{
 }G;
 // dont forget to initialise
 
-int dis(P a,P b){
-    return (a.F-b.F)*(a.F-b.F)+(a.S-b.S)*(a.S-b.S);
-}
+int n,m;
 
-void dfs(int cur,int col){
-    vis[cur]=col;
-    for(auto x:v[cur]){
-        if(vis[x]==1){
-            dfs(x,5-col);
+int pr[N];
+vector<int> primes;
+
+void seive(){
+    int i,j;
+    for(i=2;i<=m;i++){
+        if(!pr[i]){
+            primes.pb(i);
+            for(j=i;j<=m;j+=i){
+                pr[j]++;
+            }
         }
     }
 }
@@ -93,41 +93,27 @@ int32_t main()
     cin.tie(NULL); cout.tie(NULL);
     // int t;cin>>t;while(t--)
     {
-        int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        cin>>n>>k;
-        vector<P> a(n);
+        int i,j,k,ans=0,cnt=0,sum=0;
+        cin>>n>>m;
+        int a[n];
         for(i=0;i<n;i++){
-            cin>>a[i].F>>a[i].S;
+            cin>>a[i];                   
         }
-        G.init(n+2,0,n+1);
+        seive();
+        int mm=primes.size();
+        G.init(NN-1,0,1);
+        for(j=0;j<mm;j++){
+            G.add_edge(0,j+2,1);
+        }
         for(i=0;i<n;i++){
-            for(j=i+1;j<n;j++){
-                if(dis(a[i],a[j])==k*k){
-                    v[i+1].pb(j+1);
-                    v[j+1].pb(i+1);
-                    vis[i+1]=vis[j+1]=1;
+            for(j=0;j<mm;j++){
+                if(a[i]%primes[j]==0){
+                    G.add_edge(j+2,mm+i+2,1);
                 }
-            }        
+            }                   
         }
-        for(i=1;i<=n;i++){
-            if(vis[i]==1){
-                dfs(i,2);
-            }            
-        }
-        for(i=1;i<=n;i++){
-            for(j=1;j<=n;j++){
-                if(dis(a[i-1],a[j-1])==k*k && vis[i]==2 && vis[j]==3){
-                    G.add_edge(i,j,k);
-                }
-            }        
-        }
-        for(i=1;i<=n;i++){
-            if(vis[i]==2){
-                G.add_edge(0,i,1);
-            }   
-            else if(vis[i]==3){
-                G.add_edge(i,n+1,1);
-            }         
+        for(i=0;i<n;i++){
+            G.add_edge(i+mm+2,1,1);                   
         }
         G.Dinic();
         cout<<G.flow;
