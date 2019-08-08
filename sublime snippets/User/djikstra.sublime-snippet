@@ -1,0 +1,33 @@
+<snippet>
+	<content><![CDATA[
+bool vis[N];
+int mindis[N];
+int dijsktra(int src,int des){
+    priority_queue<P,vector<P>,greater<P>> Q;
+    for(int i=0;i<N;i++){
+        mindis[i]=INT_MAX;       
+        vis[i]=false;
+    }
+
+    Q.push({0,src});
+    while(!Q.empty()){
+        pair<int,int> tp=Q.top();
+        Q.pop();
+        int cur=tp.S;
+        int dis=tp.F;
+        if(vis[cur]) continue;
+        vis[cur]=true;
+        mindis[cur]=dis;
+
+        for(auto x:gr[cur]){
+            Q.push({mindis[cur]+x.S,x.F});
+        }
+    }
+    return mindis[des];
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>djikstra</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
