@@ -26,7 +26,6 @@ void seive(){
     }
 }
 
-
 int32_t main()
 {
     ios_base:: sync_with_stdio(false);
@@ -44,8 +43,9 @@ int32_t main()
         }
         for(auto x:primes){
             if(x*x > r) break;
-            int st=(l/x)*x;
-            if(x>=l) st=x*2;
+            int st;
+            if(x>=l) st=x*x;
+            else st=(l/x)*x;
             for(i=st;i<=r;i+=x){
                 if(i<l) continue;
                 while(num[i-l]%x==0){

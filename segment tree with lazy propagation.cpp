@@ -14,10 +14,12 @@ const int N=100005;
 
 int a[N];
 
-class segmenttreewithlazy
-{
-public:
-    int st[N*4],lazy[N*4];
+struct segmenttreewithlazy{
+    vector<int> st,lazy;
+    void init(int n){
+        st.clear();lazy.clear();
+        st.resize(4*n,0);lazy.resize(4*n,0);
+    }
     void build(int start,int end,int node){
         if(start==end){
             st[node]=a[start];

@@ -14,10 +14,9 @@ const int N=100005;
 
 int a[N];
 
-class segmenttreeofvectors
-{
-public:
+struct segmenttreeofvectors{
     vector<int> st[N*4];
+    
     void build(int l,int r,int node){
         if(l==r){
             st[node].pb(a[l]);

@@ -72,12 +72,7 @@ for (int i=1;i<=n;i++)
  temp.clear();
  for (int j=0;j<comp.size();j++)
   temp.push_back(cost[comp[j]]);
- sort(temp.begin(),temp.end());
  comp.clear();
- long p=0;
- tans+=temp[0];
- while (p+1<temp.size()&&temp[p+1]==temp[0])++p;
- ans=ans*(p+1)%bs;
 }
 cout<<tans<<" "<<ans<<endl;
 

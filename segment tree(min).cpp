@@ -14,10 +14,12 @@ const int N=100005;
 
 int a[N];
 
-class segmenttree
-{
-public:
-    int st[N*4];
+struct segmenttree{
+    vector<int> st;
+    void init(int _n){
+        st.clear();
+        st.resize(4*_n);
+    }
     void build(int l,int r,int node){
         if(l==r){
             st[node]=a[l];

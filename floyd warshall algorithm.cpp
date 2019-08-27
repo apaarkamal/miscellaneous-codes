@@ -1,12 +1,12 @@
 #include<bits/stdc++.h>
-#define ll long long int
+#define int long long int
 using namespace std;
-int main()
+int32_t main()
 {
     {
-        ll i,j,k,n,m,ans=0,cnt=0,sum=0;    
+        int i,j,k,n,m,ans=0,cnt=0,sum=0;    
         cin>>n>>m;
-        ll a[n][n];
+        int a[n][n];
         for(i=0;i<n;i++){
             for(j=0;j<n;j++){
                 // initially all cities are disconnected
@@ -17,7 +17,7 @@ int main()
             }
         }
         for(i=0;i<m;i++){
-            ll x,y,p;
+            int x,y,p;
             // distance from x to y is p
             cin>>x>>y>>p;
             x--;y--;

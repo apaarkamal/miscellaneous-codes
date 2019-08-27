@@ -41,6 +41,10 @@ void buildlpsarray(string pat,int *lps){
             }
         }
     }
+    // lps[m-1] indicates length of 
+    // longest suffix which is also a prefix
+    // of course whole string will be longest 
+    // suffix which is prefix
 }
 
 void buildlpsarray1(string pat,int *lps){
