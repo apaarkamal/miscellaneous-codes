@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int N=100005;
+const int N = 100005;
 
 class BIT
 {
@@ -19,7 +19,7 @@ public:
         while (x < N)
         {
             a[x] += val;
-            x += (x&-x);
+            x += (x & -x);
         }
     }
     int sum(int x)
@@ -29,26 +29,26 @@ public:
         while (x)
         {
             ret += a[x];
-            x -= (x&-x);
+            x -= (x & -x);
         }
         return ret;
     }
-}bit;
+} bit;
 
 int32_t main()
 {
     ios_base:: sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     {
-        int i,j,k,n,m,ans=0,cnt=0,sum=0;  
-        cin>>n;
+        int i, j, k, n, m, ans = 0, cnt = 0, sum = 0;
+        cin >> n;
         int a[n];
-        for(i=0;i<n;i++){
-            cin>>a[i];
-            bit.add(i,a[i]);
-            sum=bit.sum(i);
-            cout<<sum<<'\n';
-        }  
-        
+        for (i = 0; i < n; i++) {
+            cin >> a[i];
+            bit.add(i, a[i]);
+            sum = bit.sum(i);
+            cout << sum << '\n';
+        }
+
     }
 }

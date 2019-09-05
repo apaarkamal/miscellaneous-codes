@@ -9,31 +9,31 @@ using namespace std;
 #define P pair<int,int>
 #define pb push_back
 
-const int N=100005;
+const int N = 100005;
 
-const int NN=30005,MM=500005;
-struct MaxFlow{
+const int NN = 30005, MM = 500005;
+struct MaxFlow {
     vector<int> gr[NN];
-    struct Edge{
-        int x,y,w;
-    }edges[MM];
-    int source,sink,flow,n,ec,Level[NN],Q[NN],PV[NN];
-    void init(int sz,int SRC,int SN){
-        n=sz,source=SRC,sink=SN,flow=ec=0;
-        for(int i=0;i<=n;i++) gr[i].clear();            
+    struct Edge {
+        int x, y, w;
+    } edges[MM];
+    int source, sink, flow, n, ec, Level[NN], Q[NN], PV[NN];
+    void init(int sz, int SRC, int SN) {
+        n = sz, source = SRC, sink = SN, flow = ec = 0;
+        for (int i = 0; i <= n; i++) gr[i].clear();
     }
-    void add_edge(int x,int y,int w){
+    void add_edge(int x, int y, int w) {
         gr[x].pb(ec);
-        edges[ec++]={x,y,w};
+        edges[ec++] = {x, y, w};
         gr[y].pb(ec);
-        edges[ec++]={y,x,0};// for undirected replace 0 with w
+        edges[ec++] = {y, x, 0}; // for undirected replace 0 with w
     }
-    int BlockFlow(int cur,int cnt){//dfs
-        if(cur==sink) return cnt;
-        for(int &i=PV[cur];i>=0;i--){
-            int cur_e=gr[cur][i];
-            if(edges[cur_e].w && Level[edges[cur_e].y] == Level[cur]+1){
-                if(int val = BlockFlow(edges[cur_e].y,min(cnt,edges[cur_e].w))){
+    int BlockFlow(int cur, int cnt) { //dfs
+        if (cur == sink) return cnt;
+        for (int &i = PV[cur]; i >= 0; i--) {
+            int cur_e = gr[cur][i];
+            if (edges[cur_e].w && Level[edges[cur_e].y] == Level[cur] + 1) {
+                if (int val = BlockFlow(edges[cur_e].y, min(cnt, edges[cur_e].w))) {
                     edges[cur_e].w -= val;
                     edges[cur_e ^ 1].w += val;
                     return val;
@@ -61,26 +61,26 @@ struct MaxFlow{
         int i, t;
         flow = 0;
         while (GetLevel()) {
-            for (i=0;i<=n;i++) PV[i]=gr[i].size()-1;
+            for (i = 0; i <= n; i++) PV[i] = gr[i].size() - 1;
             while (t = BlockFlow(source, 1e18)) {
                 flow += t;
             }
         }
     }
-}G;
+} G;
 // dont forget to initialise
 
-int n,m;
+int n, m;
 
 int pr[N];
 vector<int> primes;
 
-void seive(){
-    int i,j;
-    for(i=2;i<=m;i++){
-        if(!pr[i]){
+void seive() {
+    int i, j;
+    for (i = 2; i <= m; i++) {
+        if (!pr[i]) {
             primes.pb(i);
-            for(j=i;j<=m;j+=i){
+            for (j = i; j <= m; j += i) {
                 pr[j]++;
             }
         }
@@ -93,29 +93,29 @@ int32_t main()
     cin.tie(NULL); cout.tie(NULL);
     // int t;cin>>t;while(t--)
     {
-        int i,j,k,ans=0,cnt=0,sum=0;
-        cin>>n>>m;
+        int i, j, k, ans = 0, cnt = 0, sum = 0;
+        cin >> n >> m;
         int a[n];
-        for(i=0;i<n;i++){
-            cin>>a[i];                   
+        for (i = 0; i < n; i++) {
+            cin >> a[i];
         }
         seive();
-        int mm=primes.size();
-        G.init(NN-1,0,1);
-        for(j=0;j<mm;j++){
-            G.add_edge(0,j+2,1);
+        int mm = primes.size();
+        G.init(NN - 1, 0, 1);
+        for (j = 0; j < mm; j++) {
+            G.add_edge(0, j + 2, 1);
         }
-        for(i=0;i<n;i++){
-            for(j=0;j<mm;j++){
-                if(a[i]%primes[j]==0){
-                    G.add_edge(j+2,mm+i+2,1);
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < mm; j++) {
+                if (a[i] % primes[j] == 0) {
+                    G.add_edge(j + 2, mm + i + 2, 1);
                 }
-            }                   
+            }
         }
-        for(i=0;i<n;i++){
-            G.add_edge(i+mm+2,1,1);                   
+        for (i = 0; i < n; i++) {
+            G.add_edge(i + mm + 2, 1, 1);
         }
         G.Dinic();
-        cout<<G.flow;
+        cout << G.flow;
     }
 }

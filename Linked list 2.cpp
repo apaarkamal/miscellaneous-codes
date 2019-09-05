@@ -13,7 +13,7 @@ public:
 };
 int length(Node *head) {
     int result = 0;
-    while(head->next != NULL) {
+    while (head->next != NULL) {
         result++;
         head = head->next;
     }
@@ -27,12 +27,12 @@ void insertATHead(Node *&head, int data) {
 }
 
 void insertAtTail(Node *&head, int data) {
-    if(head == NULL) {
+    if (head == NULL) {
         insertATHead(head, data);
         return;
     }
     Node *temp = head;
-    while(temp->next != NULL) {
+    while (temp->next != NULL) {
         temp = temp->next;
     }
     Node *new_node = new Node(data);
@@ -41,18 +41,18 @@ void insertAtTail(Node *&head, int data) {
 }
 
 void insertAtMiddle(Node *&head, int data, int pos) {
-    if(pos == 0 and head == NULL) {
+    if (pos == 0 and head == NULL) {
         insertATHead(head, data);
         return;
     }
-    if(pos >= length(head)) {
+    if (pos >= length(head)) {
         insertAtTail(head, data);
         return;
     }
     int count = 0;
     Node *temp = head;
-    while(count<=pos) {
-        temp=temp->next;
+    while (count <= pos) {
+        temp = temp->next;
         count++;
     }
     Node *new_node = new Node(data);
@@ -62,7 +62,7 @@ void insertAtMiddle(Node *&head, int data, int pos) {
 }
 
 void deleteAtHead(Node *&head) {
-    if(head == NULL) {
+    if (head == NULL) {
         return;
     }
     Node *temp = head;
@@ -72,7 +72,7 @@ void deleteAtHead(Node *&head) {
 
 void deleteAtTail2(Node *&head) {
     Node *temp = head;
-    while(temp->next->next != NULL) {
+    while (temp->next->next != NULL) {
         temp = temp->next;
     }
     Node *to_be_removed = temp->next;
@@ -83,7 +83,7 @@ void deleteAtTail2(Node *&head) {
 void deleteAtTail(Node *&head) {
     Node *temp = head;
     Node *prev = NULL;
-    while(temp->next != NULL) {
+    while (temp->next != NULL) {
         prev = temp;
         temp = temp->next;
     }
@@ -93,19 +93,19 @@ void deleteAtTail(Node *&head) {
 }
 
 void deleteAtMiddle(Node *&head, int pos) {
-    if(head == NULL) {
+    if (head == NULL) {
         return;
     }
-    if(pos == 0) {
+    if (pos == 0) {
         deleteAtHead(head);
     }
-    if(pos > length(head)) {
+    if (pos > length(head)) {
         deleteAtTail(head);
     }
     int jump = 1;
     Node *temp = head;
     Node *prev = NULL;
-    while(jump <= pos-1) {
+    while (jump <= pos - 1) {
         prev = temp;
         temp = temp->next;
         jump += 1;
@@ -120,7 +120,7 @@ void reverseIterative(Node *&head) {
     Node *prev = NULL;
     Node *curr = head;
     Node *N;
-    while(curr != NULL) {
+    while (curr != NULL) {
         N = curr->next;
         curr->next = prev;
         prev = curr;
@@ -130,7 +130,7 @@ void reverseIterative(Node *&head) {
 }
 
 Node* reverseRecursive(Node *head) {
-    if(head == NULL or head->next == NULL) {
+    if (head == NULL or head->next == NULL) {
         return head;
     }
 
@@ -141,71 +141,71 @@ Node* reverseRecursive(Node *head) {
 }
 
 Node* midNode(Node *head) {
-    if(head == NULL or head->next == NULL) {
+    if (head == NULL or head->next == NULL) {
         return head;
     }
 
     Node *slow = head;
     Node *fast = head->next;
-    while(fast!= NULL and fast->next!=NULL) {
+    while (fast != NULL and fast->next != NULL) {
         fast = fast->next->next;
         slow = slow->next;
-    }   
+    }
     return slow;
 }
 
 bool cycleDetect(Node *head) {
-    if(head == NULL or head->next == NULL) {
+    if (head == NULL or head->next == NULL) {
         return head;
     }
 
     Node *slow = head;
     Node *fast = head;
-    while(fast!= NULL and fast->next!=NULL) {
+    while (fast != NULL and fast->next != NULL) {
         fast = fast->next->next;
         slow = slow->next;
-        if(slow==fast) {
+        if (slow == fast) {
             return true;
         }
-    }   
+    }
     return false;
 }
 
 void buildList(Node *&head) {
     int data;
-    cin>>data;
-    while(data!=-1) {
+    cin >> data;
+    while (data != -1) {
         insertAtTail(head, data);
-        cin>>data;
+        cin >> data;
     }
 }
 
 Node* merge(Node *a, Node *b) {
-    if(a == NULL){
+    if (a == NULL) {
         return b;
     }
-    if(b == NULL) {
+    if (b == NULL) {
         return a;
     }
     Node *result = new Node(0);
     Node *temp = result;
-    while(b != NULL and a != NULL) {
-        if(a->data <= b->data) {
+    while (b != NULL and a != NULL) {
+        if (a->data <= b->data) {
             insertAtTail(result, a->data);
             a = a->next;
             temp = temp->next;
-        } else if(a->data > b->data) {
+        } else if (a->data > b->data) {
             insertAtTail(result, b->data);
             b = b->next;
             temp = temp->next;
         }
     }
-    while(a != NULL) {
+    while (a != NULL) {
         insertAtTail(result, a->data);
         a = a->next;
         temp = temp->next;
     }
-    while(b != NULL) {
+    while (b != NULL) {
         insertAtTail(result, b->data);
         b = b->next;
         temp = temp->next;
@@ -215,11 +215,11 @@ Node* merge(Node *a, Node *b) {
 }
 
 void print(Node *head) {
-    while(head != NULL) {
-        cout<<head->data<<"-->";
-        head= head->next;
+    while (head != NULL) {
+        cout << head->data << "-->";
+        head = head->next;
     }
-    cout<<endl;
+    cout << endl;
 }
 
 

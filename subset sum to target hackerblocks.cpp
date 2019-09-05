@@ -1,61 +1,61 @@
-// A Dynamic Programming solution for subset sum problem 
-#include <bits/stdc++.h> 
+// A Dynamic Programming solution for subset sum problem
+#include <bits/stdc++.h>
 using namespace std;
 
-// Returns true if there is a subset of set[] with sun equal to given sum 
-bool isSubsetSum(int set[], int n, int sum) 
-{ 
-    // The value of subset[i][j] will be true if there is a 
-    // subset of set[0..j-1] with sum equal to i 
-    bool subset[n+1][sum+1]; 
+// Returns true if there is a subset of set[] with sun equal to given sum
+bool isSubsetSum(int set[], int n, int sum)
+{
+    // The value of subset[i][j] will be true if there is a
+    // subset of set[0..j-1] with sum equal to i
+    bool subset[n + 1][sum + 1];
 
-    // If sum is 0, then answer is true 
-    for (int i = 0; i <= n; i++) 
-    subset[i][0] = true; 
+    // If sum is 0, then answer is true
+    for (int i = 0; i <= n; i++)
+        subset[i][0] = true;
 
-    // If sum is not 0 and set is empty, then answer is false 
-    for (int i = 1; i <= sum; i++) 
-    subset[0][i] = false; 
+    // If sum is not 0 and set is empty, then answer is false
+    for (int i = 1; i <= sum; i++)
+        subset[0][i] = false;
 
-    // Fill the subset table in botton up manner 
-    for (int i = 1; i <= n; i++) 
-    { 
-    for (int j = 1; j <= sum; j++) 
-    { 
-        if(j<set[i-1]) 
-        subset[i][j] = subset[i-1][j]; 
-        if (j >= set[i-1]) 
-        subset[i][j] = subset[i-1][j] || 
-                                subset[i - 1][j-set[i-1]]; 
-    } 
-    } 
+    // Fill the subset table in botton up manner
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= sum; j++)
+        {
+            if (j < set[i - 1])
+                subset[i][j] = subset[i - 1][j];
+            if (j >= set[i - 1])
+                subset[i][j] = subset[i - 1][j] ||
+                               subset[i - 1][j - set[i - 1]];
+        }
+    }
 
-    /* // uncomment this code to print table 
-    for (int i = 0; i <= n; i++) 
-    { 
-    for (int j = 0; j <= sum; j++) 
-        printf ("%4d", subset[i][j]); 
-    printf("\n"); 
+    /* // uncomment this code to print table
+    for (int i = 0; i <= n; i++)
+    {
+    for (int j = 0; j <= sum; j++)
+        printf ("%4d", subset[i][j]);
+    printf("\n");
     }*/
 
-    return subset[n][sum]; 
-} 
+    return subset[n][sum];
+}
 
-// Driver program to test above function 
-int main() 
-{ 
+// Driver program to test above function
+int main()
+{
     int n;
-    cin>>n;
+    cin >> n;
     int set[n];
-        int sum;
-    cin>>sum;
-    for(int i=0;i<n;i++){
-        cin>>set[i];
+    int sum;
+    cin >> sum;
+    for (int i = 0; i < n; i++) {
+        cin >> set[i];
     };
-    if (isSubsetSum(set, n, sum) == true) 
-        printf("Yes"); 
+    if (isSubsetSum(set, n, sum) == true)
+        printf("Yes");
     else
-        printf("No"); 
-    return 0; 
-} 
-// This code is contributed by Arjun Tyagi. 
+        printf("No");
+    return 0;
+}
+// This code is contributed by Arjun Tyagi.

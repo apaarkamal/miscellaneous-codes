@@ -10,18 +10,18 @@ using namespace std;
 #define pb push_back
 #define db(x) cout <<#x<<": "<<x<<'\n';
 
-const int N=100005;
+const int N = 100005;
 
 // memoisation
 int memo[N];
 
-int fib(int n){
-    if(n==1) return 1;
-    if(n==2) return 2;
-    if(memo[n]!=-1){
+int fib(int n) {
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    if (memo[n] != -1) {
         return memo[n];
     }
-    memo[n]=fib(n-1)+fib(n-2);
+    memo[n] = fib(n - 1) + fib(n - 2);
     return memo[n];
 }
 
@@ -31,9 +31,9 @@ int32_t main()
     cin.tie(NULL); cout.tie(NULL);
     // int t;cin>>t;while(t--)
     {
-        int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        memset(memo,-1,sizeof(memo));
-        cout<<fib(50);
+        int i, j, k, n, m, ans = 0, cnt = 0, sum = 0;
+        memset(memo, -1, sizeof(memo));
+        cout << fib(50);
 
     }
 }

@@ -10,20 +10,20 @@ using namespace std;
 #define pb push_back
 #define db(x) cout <<#x<<": "<<x<<'\n';
 
-const int N=100005;
+const int N = 100005;
 
-int ans=0,n;
+int ans = 0, n;
 
-void fun(int pos){
+void fun(int pos) {
     db(pos);
-    if(pos>n) return;
-    if(pos==n){
+    if (pos > n) return;
+    if (pos == n) {
         ans++;
         return ;
     }
-    fun(pos+1);
-    fun(pos+2);
-    fun(pos+3);
+    fun(pos + 1);
+    fun(pos + 2);
+    fun(pos + 3);
 }
 
 int32_t main()
@@ -32,8 +32,8 @@ int32_t main()
     cin.tie(NULL); cout.tie(NULL);
     // int t;cin>>t;while(t--)
     {
-        cin>>n;
+        cin >> n;
         fun(0);
-        cout<<ans;
+        cout << ans;
     }
 }

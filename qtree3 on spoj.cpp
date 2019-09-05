@@ -14,7 +14,7 @@ using namespace std;
 #define db(...) __f(#__VA_ARGS__, __VA_ARGS__)
 
 template <typename Arg1>
-void __f(const char* name, Arg1&& arg1) { cerr << name << " : " << arg1 <<'\n'; }
+void __f(const char* name, Arg1&& arg1) { cerr << name << " : " << arg1 << '\n'; }
 template <typename Arg1, typename... Args>
 void __f(const char* names, Arg1&& arg1, Args&&... args) {
     const char* comma = strchr(names + 1, ',');
@@ -22,152 +22,152 @@ void __f(const char* names, Arg1&& arg1, Args&&... args) {
 }
 
 
-void the_martian(){
+void the_martian() {
     ios_base:: sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    #ifndef ONLINE_JUDGE
+#ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     freopen("debug.txt", "w", stderr);
-    #endif
+#endif
 }
 
-const int N=100005,M=18;
-int ptr=0,chain_no=0,ans=-1;
+const int N = 100005, M = 18;
+int ptr = 0, chain_no = 0, ans = -1;
 
-vector<P> gr[N],edges;
-int subsize[N],dep[N],Par[N][M];
-int chain_head[N],chain_Ind[N],chain_size[N],at_that_in_node[N];
-int Base_array[N],pos_in_Base[N];
+vector<P> gr[N], edges;
+int subsize[N], dep[N], Par[N][M];
+int chain_head[N], chain_Ind[N], chain_size[N], at_that_in_node[N];
+int Base_array[N], pos_in_Base[N];
 
 class segmenttree
 {
 public:
-    int st[N*4];
-    void build(int l,int r,int node){
-        if(l==r){
-            st[node]=Base_array[l];
+    int st[N * 4];
+    void build(int l, int r, int node) {
+        if (l == r) {
+            st[node] = Base_array[l];
             return;
         }
-        int mid=(l+r)/2;
-        build(l,mid,node*2+1);
-        build(mid+1,r,node*2+2);
-        st[node]=(st[2*node+1]+st[2*node+2]);
+        int mid = (l + r) / 2;
+        build(l, mid, node * 2 + 1);
+        build(mid + 1, r, node * 2 + 2);
+        st[node] = (st[2 * node + 1] + st[2 * node + 2]);
     }
 
-    void update(int l,int r,int indup,int val,int node){
-        if(l==r){
-            Base_array[l]=val;
-            st[node]=val;
+    void update(int l, int r, int indup, int val, int node) {
+        if (l == r) {
+            Base_array[l] = val;
+            st[node] = val;
             return;
         }
-        else{
-            int mid=(l+r)/2;
-            if(indup>=l&&indup<=mid){
-                update(l,mid,indup,val,node*2+1);
+        else {
+            int mid = (l + r) / 2;
+            if (indup >= l && indup <= mid) {
+                update(l, mid, indup, val, node * 2 + 1);
             }
-            else{
-                update(mid+1,r,indup,val,node*2+2);
+            else {
+                update(mid + 1, r, indup, val, node * 2 + 2);
             }
-            st[node]=(st[2*node+1]+st[2*node+2]);  
+            st[node] = (st[2 * node + 1] + st[2 * node + 2]);
         }
     }
 
-    int query(int si,int se,int l,int r,int node){
-        if(se<l||si>r||l>r){
+    int query(int si, int se, int l, int r, int node) {
+        if (se < l || si > r || l > r) {
             return 0;
         }
-        if(si>=l&&se<=r){
+        if (si >= l && se <= r) {
             return st[node];
         }
-        int mid=(si+se)/2;
-        int q1=query(si,mid,l,r,node*2+1);
-        int q2=query(mid+1,se,l,r,node*2+2);
-        return q1+q2;
+        int mid = (si + se) / 2;
+        int q1 = query(si, mid, l, r, node * 2 + 1);
+        int q2 = query(mid + 1, se, l, r, node * 2 + 2);
+        return q1 + q2;
     }
 
-    void go(int l,int r){
-        if(l==r){
-            if(Base_array[l]==1){
-                ans=at_that_in_node[l];
+    void go(int l, int r) {
+        if (l == r) {
+            if (Base_array[l] == 1) {
+                ans = at_that_in_node[l];
             }
             return ;
         }
-        int mid=(l+r)/2;
-        int sum1=query(0,ptr-1,l,mid,0);
-        int sum2=query(0,ptr-1,mid+1,r,0);
-        if(sum1==0&&sum2==0){
+        int mid = (l + r) / 2;
+        int sum1 = query(0, ptr - 1, l, mid, 0);
+        int sum2 = query(0, ptr - 1, mid + 1, r, 0);
+        if (sum1 == 0 && sum2 == 0) {
             return;
         }
-        else if(sum1){
-            go(l,mid);
+        else if (sum1) {
+            go(l, mid);
         }
-        else{
-            go(mid+1,r);
+        else {
+            go(mid + 1, r);
         }
         return ;
     }
-}tr;
+} tr;
 
-void HLD(int cur,int par,int weight){
-    if(chain_head[chain_no]==0){
-        chain_head[chain_no]=cur;
+void HLD(int cur, int par, int weight) {
+    if (chain_head[chain_no] == 0) {
+        chain_head[chain_no] = cur;
     }
-    chain_Ind[cur]=chain_no;
-    pos_in_Base[cur]=ptr;
-    at_that_in_node[ptr]=cur;
-    Base_array[ptr++]=weight;
+    chain_Ind[cur] = chain_no;
+    pos_in_Base[cur] = ptr;
+    at_that_in_node[ptr] = cur;
+    Base_array[ptr++] = weight;
     chain_size[chain_no]++;
 
-    int sp_chld=-1,w_sp_chld;
-    for(auto x:gr[cur]){
-        if(x.F!=par&&(sp_chld==-1||subsize[x.F]>subsize[sp_chld])){
-            sp_chld=x.F;
-            w_sp_chld=x.S;
-        }     
+    int sp_chld = -1, w_sp_chld;
+    for (auto x : gr[cur]) {
+        if (x.F != par && (sp_chld == -1 || subsize[x.F] > subsize[sp_chld])) {
+            sp_chld = x.F;
+            w_sp_chld = x.S;
+        }
     }
-    if(sp_chld!=-1){
-        HLD(sp_chld,cur,w_sp_chld);
+    if (sp_chld != -1) {
+        HLD(sp_chld, cur, w_sp_chld);
     }
-    for(auto x:gr[cur]){
-        if(x.F!=par&&x.F!=sp_chld){
+    for (auto x : gr[cur]) {
+        if (x.F != par && x.F != sp_chld) {
             chain_no++;
-            HLD(x.F,cur,x.S);
-        }     
-    }
-}
-
-void dfs(int cur,int par){
-    subsize[cur]=1;
-    dep[cur]=dep[par]+1;
-    for(auto x:gr[cur]){
-        if(x.F!=par){
-            dfs(x.F,cur);
-            subsize[cur]+=subsize[x.F];
+            HLD(x.F, cur, x.S);
         }
     }
 }
 
-void edge(){
-    int x,y,w=0;
-    scanf("%lld%lld",&x,&y);
-    gr[x].pb({y,w});
-    gr[y].pb({x,w});
-    edges.pb({x,y});
+void dfs(int cur, int par) {
+    subsize[cur] = 1;
+    dep[cur] = dep[par] + 1;
+    for (auto x : gr[cur]) {
+        if (x.F != par) {
+            dfs(x.F, cur);
+            subsize[cur] += subsize[x.F];
+        }
+    }
 }
 
-void query_up(int u,int v){
-    ans=-1;
-    int uchain=chain_Ind[u],vchain=chain_Ind[v];
-    while(1){
-        uchain=chain_Ind[u];
-        if(uchain==vchain){
-            tr.go(pos_in_Base[v],pos_in_Base[u]);
+void edge() {
+    int x, y, w = 0;
+    scanf("%lld%lld", &x, &y);
+    gr[x].pb({y, w});
+    gr[y].pb({x, w});
+    edges.pb({x, y});
+}
+
+void query_up(int u, int v) {
+    ans = -1;
+    int uchain = chain_Ind[u], vchain = chain_Ind[v];
+    while (1) {
+        uchain = chain_Ind[u];
+        if (uchain == vchain) {
+            tr.go(pos_in_Base[v], pos_in_Base[u]);
             break;
         }
-        else{
-            tr.go(pos_in_Base[chain_head[uchain]],pos_in_Base[u]);
-            u=Par[chain_head[uchain]][0];
+        else {
+            tr.go(pos_in_Base[chain_head[uchain]], pos_in_Base[u]);
+            u = Par[chain_head[uchain]][0];
         }
     }
 }
@@ -175,29 +175,29 @@ void query_up(int u,int v){
 int32_t main()
 {
     the_martian();
-    int n,m;
-    while(scanf("%lld%lld",&n,&m) != EOF)
+    int n, m;
+    while (scanf("%lld%lld", &n, &m) != EOF)
     {
-        int i,j,k,cnt=0,sum=0;
-        for(i=1;i<n;i++){
-            edge();                
+        int i, j, k, cnt = 0, sum = 0;
+        for (i = 1; i < n; i++) {
+            edge();
         }
-        ptr=0;
-        chain_no=0;
-        dfs(1,0);
-        HLD(1,0,0);
-        tr.build(0,ptr-1,0);
+        ptr = 0;
+        chain_no = 0;
+        dfs(1, 0);
+        HLD(1, 0, 0);
+        tr.build(0, ptr - 1, 0);
 
-        while(m--){
-            int t,u;
-            scanf("%lld%lld",&t,&u);
-            if(t){
-                query_up(u,1);
-                cout<<ans<<'\n';
+        while (m--) {
+            int t, u;
+            scanf("%lld%lld", &t, &u);
+            if (t) {
+                query_up(u, 1);
+                cout << ans << '\n';
             }
-            else{
-                int pos=pos_in_Base[u];
-                tr.update(0,ptr-1,pos,1-Base_array[pos],0);
+            else {
+                int pos = pos_in_Base[u];
+                tr.update(0, ptr - 1, pos, 1 - Base_array[pos], 0);
             }
         }
     }

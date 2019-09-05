@@ -12,11 +12,11 @@ using namespace __gnu_pbds;
 #define P pair<int,int>
 #define pb push_back
 
-typedef tree<int, null_type, less<int>, rb_tree_tag, 
-tree_order_statistics_node_update> 
-new_data_set; 
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+        tree_order_statistics_node_update>
+        new_data_set;
 
-const int N=100005,M=22;
+const int N = 100005, M = 22;
 
 int32_t main()
 {
@@ -24,15 +24,15 @@ int32_t main()
     cin.tie(NULL); cout.tie(NULL);
     // int t;cin>>t;while(t--)
     {
-        int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        cin>>n;
+        int i, j, k, n, m, ans = 0, cnt = 0, sum = 0;
+        cin >> n;
         new_data_set S;
-        for(i=0;i<n;i++){
+        for (i = 0; i < n; i++) {
             int x;
-            cin>>x;
+            cin >> x;
             S.insert(x);
         }
-        cout<<*S.find_by_order(2)<<'\n';// element at  second index in the set
-        cout<<S.order_of_key(2);// at as lower bound to aa key provided
+        cout << *S.find_by_order(2) << '\n'; // element at  second index in the set
+        cout << S.order_of_key(2); // at as lower bound to aa key provided
     }
 }

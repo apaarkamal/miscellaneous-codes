@@ -31,56 +31,56 @@ int digitUp[20];
 void toDigUpper(LL x)
 {
     stack <int> stk;
-    while(x>0)
+    while (x > 0)
     {
-        stk.push(x%10); x/=10;
+        stk.push(x % 10); x /= 10;
     }
-    if(stk.empty())stk.push(0);
-    while(!stk.empty())
+    if (stk.empty())stk.push(0);
+    while (!stk.empty())
     {
-        digitUp[len++] = stk.top();stk.pop();
+        digitUp[len++] = stk.top(); stk.pop();
     }
 }
 
 
 LL dp[17][17][2][2][2];
-LL rec(int pos, bool noLimitOfPrvPos,bool startHoise,int backPos, bool boroNisi)
+LL rec(int pos, bool noLimitOfPrvPos, bool startHoise, int backPos, bool boroNisi)
 {
-    if(pos > backPos)
+    if (pos > backPos)
     {
-        if(!noLimitOfPrvPos && boroNisi)return 0;
+        if (!noLimitOfPrvPos && boroNisi)return 0;
         return 1;
     }
 
-    if(dp[pos][backPos][noLimitOfPrvPos][startHoise][boroNisi] != -1)
+    if (dp[pos][backPos][noLimitOfPrvPos][startHoise][boroNisi] != -1)
         return dp[pos][backPos][noLimitOfPrvPos][startHoise][boroNisi];
 
     int limit;
-    if(noLimitOfPrvPos == true)limit = 9;
+    if (noLimitOfPrvPos == true)limit = 9;
     else limit = digitUp[pos];
 
     LL ret = 0;
-    for(int i=0;i<=limit;i++)
+    for (int i = 0; i <= limit; i++)
     {
-        if(startHoise == 0 && i == 0)
+        if (startHoise == 0 && i == 0)
         {
-            ret += rec(pos+1,noLimitOfPrvPos || i<digitUp[pos],0, backPos,boroNisi);
+            ret += rec(pos + 1, noLimitOfPrvPos || i < digitUp[pos], 0, backPos, boroNisi);
         }
-        else if(pos == backPos)
+        else if (pos == backPos)
         {
-            ret += rec(pos+1,noLimitOfPrvPos || i<digitUp[pos],startHoise | i > 0, backPos,boroNisi);
+            ret += rec(pos + 1, noLimitOfPrvPos || i < digitUp[pos], startHoise | i > 0, backPos, boroNisi);
         }
         else
         {
-            if(i == digitUp[backPos])
+            if (i == digitUp[backPos])
             {
-                ret += rec(pos+1,noLimitOfPrvPos || i<digitUp[pos],startHoise | i > 0,
-                        backPos-1,boroNisi);
+                ret += rec(pos + 1, noLimitOfPrvPos || i < digitUp[pos], startHoise | i > 0,
+                           backPos - 1, boroNisi);
                 continue;
             }
 
-            ret += rec(pos+1,noLimitOfPrvPos || i<digitUp[pos],startHoise | i > 0,
-                        backPos-1,i > digitUp[backPos]);
+            ret += rec(pos + 1, noLimitOfPrvPos || i < digitUp[pos], startHoise | i > 0,
+                       backPos - 1, i > digitUp[backPos]);
         }
     }
     dp[pos][backPos][noLimitOfPrvPos][startHoise][boroNisi] = ret;
@@ -89,37 +89,37 @@ LL rec(int pos, bool noLimitOfPrvPos,bool startHoise,int backPos, bool boroNisi)
 
 LL getAns(LL x)
 {
-    if(x < 0)return 0;
-    if(x < 10)return x+1;
-    mem(dp,-1);
+    if (x < 0)return 0;
+    if (x < 10)return x + 1;
+    mem(dp, -1);
     len = 0;
     toDigUpper(x);
-    return rec(0,false,0,len-1,false);
+    return rec(0, false, 0, len - 1, false);
 }
 
 
 int main()
 {
     ios_base:: sync_with_stdio(false);
-        cin.tie(NULL); cout.tie(NULL);
-        #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin);
-        freopen("output.txt", "w", stdout);
-        #endif
+    cin.tie(NULL); cout.tie(NULL);
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
     int t;
     sf(t);
     int TC = 0;
-    while(t--)
+    while (t--)
     {
-        LL a,b;
+        LL a, b;
         lsf(a);
         lsf(b);
 
-        if(a > b)swap(a,b);
+        if (a > b)swap(a, b);
 
-        LL ret = getAns(b) - getAns(a-1);
+        LL ret = getAns(b) - getAns(a - 1);
 
-        printf("Case %d: %lld\n",++TC,ret);
+        printf("Case %d: %lld\n", ++TC, ret);
     }
 }
 

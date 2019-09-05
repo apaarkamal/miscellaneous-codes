@@ -10,23 +10,25 @@
 using namespace std;
 using namespace __gnu_pbds;
 
-typedef tree<ll, null_type, less<ll>, rb_tree_tag, 
-tree_order_statistics_node_update> 
-new_data_set; 
+typedef tree<ll, null_type, less<ll>, rb_tree_tag,
+        tree_order_statistics_node_update>
+        new_data_set;
 
-const ll N=100005;
+const ll N = 100005;
 
 int main()
 {
     ios_base:: sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    freopen("input.txt", "w", stdout);
-    ll t;
-    t=400000;
-    cout<<t<<endl;
-    while(t--){   
-        int n=rand()%10+1;
-        cout<<n<<'\n';
+    ll n, m, i, j;
+    string s = "BW";
+    n = 2000; m = 2000;
+    cout << n << " " << m << '\n';
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < m; j++) {
+            cout << s[rand() % 2];
+        }
+        cout << '\n';
     }
     return 0;
 }

@@ -9,7 +9,7 @@ using namespace std;
 #define P pair<int,int>
 #define pb push_back
 
-const int N=100005;
+const int N = 100005;
 
 int32_t main()
 {
@@ -17,11 +17,11 @@ int32_t main()
     cin.tie(NULL); cout.tie(NULL);
     // int t;cin>>t;while(t--)
     {
-        int i,j,k,n,m,ans=0,cnt=0,sum=0;
-        int *ptr=new int;
-        cout<<ptr;
+        int i, j, k, n, m, ans = 0, cnt = 0, sum = 0;
+        int *ptr = new int;
+        cout << ptr;
         stringstream ss;
         ss << ptr;
-        cout<<ss.str();
+        cout << ss.str();
     }
 }
