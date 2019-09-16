@@ -11,6 +11,8 @@ using namespace std;
 
 const int N = 100005;
 
+map<int, int> mp;
+
 int32_t main()
 {
 	ios_base:: sync_with_stdio(false);
@@ -22,7 +24,16 @@ int32_t main()
 		int a[n];
 		for (i = 0; i < n; i++) {
 			cin >> a[i];
+			a[i] = (a[i] < 0 ? -1 : 1);
+			if (i) a[i] *= a[i - 1];
 		}
-
+		int pos = 0, neg = 0;
+		mp[1] = 1;
+		for (i = 0; i < n; i++) {
+			pos += mp[a[i]];
+			neg += mp[-a[i]];
+			mp[a[i]]++;
+		}
+		cout << neg << " " << pos;
 	}
 }

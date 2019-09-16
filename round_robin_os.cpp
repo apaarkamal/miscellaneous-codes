@@ -48,7 +48,7 @@ int32_t main()
         int quant;
         cin >> quant;
 
-        priority_queue<int> Q;
+        deque<int> Q;
 
         for (i = 0; i < n; i++) {
             cin >> operations[i].arrival_time >> operations[i].burst_time;
@@ -58,35 +58,30 @@ int32_t main()
         }
 
         int done = 0;
-        int tme = 0;
+        int tme = 0, prev = -1;
 
         while (done < n ) {
-            if (!arrived[tme].empty()) {
-                for (auto x : arrived[tme]) {
-                    Q.push(x);
+            for (i = tme ; i > prev; i--) {
+                if (!arrived[i].empty()) {
+                    for (auto x : arrived[i]) Q.push_front(x);
                 }
             }
+            prev = tme;
             if (Q.empty()) {
                 tme++;
             }
             else {
-                while (!Q.empty()) {
-                    cout << Q.top() << '\n';
-                    Q.pop();
-                }
-                if (Q.empty()) break;
-                int cur = Q.top();
-                Q.pop();
+                int cur = Q.front();
+                Q.pop_front();
                 if (operations[cur].remaining_time > quant) {
                     operations[cur].remaining_time -= quant;
                     tme += quant;
-                    Q.push(cur);
+                    Q.push_back(cur);
                 }
                 else {
                     tme += operations[cur].remaining_time;
                     operations[cur].remaining_time = 0;
                     operations[cur].end_time = tme;
-                    db(cur);
                     done++;
                 }
             }
