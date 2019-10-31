@@ -1,0 +1,11 @@
+1. download Astyleformatter
+2. enable save on build 
+3. enable from package of astyleformatter that auto format on save
+https://www.youtube.com/watch?v=6kLoVsjkCz4
+//////////////////////////////////////////////////////
+use FileHeader in package to automatic install header like created by and time in sublime file on save then to change your template
+1) goto sublime package fileheader template header 
+2) now change the header in way you want 
+3) preferences setting pakage fileheader 
+4) set     "custom_template_header_path": "C++.tmpl",
+5) its done

@@ -58,7 +58,7 @@ int32_t main()
         for (i = 0; i < M; i++) {
             for (j = 0; j < N; j++) {
                 if ((1 << i)&j) {
-                    dp[j] += dp[(1 << i)^j];
+                    dp[j] += dp[(1 << i)^ONLINE_JUDGE];
                 }
             }
         }

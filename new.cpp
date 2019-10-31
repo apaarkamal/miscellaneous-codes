@@ -1,3 +1,6 @@
+// Author : Apaar
+// Built  : 31-10-2019 17:56:52
+
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -11,7 +14,33 @@ using namespace std;
 
 const int N = 100005;
 
-map<int, int> mp;
+const int mod = 1000000007;
+int fact[N], invfact[N];
+inline int add(int x, int y) { x += y; return x % mod;}
+inline int sub(int x, int y) { x -= y; x %= mod; x += mod; return x % mod;}
+inline int mul(int x, int y) { return  (x * y) % mod;}
+inline int powr(int a, int b) {
+	int x = 1 % mod;
+	while (b) {
+		if (b & 1) x = mul(x, a);
+		a = mul(a, a);
+		b >>= 1;
+	}
+	return x;
+}
+inline int inv(int a) { return powr(a, mod - 2);}
+void pre() {
+	fact[0] = invfact[0] = 1;
+	for (int i = 1; i < N; i++) fact[i] = mul(i, fact[i - 1]);
+	invfact[N - 1] = inv(fact[N - 1]);
+	for (int i = N - 2; i >= 1; i--) invfact[i] = mul(invfact[i + 1], i + 1);
+	assert(invfact[1] == 1);
+}
+
+inline int C(int n, int k) {
+	if (n < k || k < 0) return 0;
+	return mul(fact[n], mul(invfact[k], invfact[n - k]));
+}
 
 int32_t main()
 {
@@ -20,20 +49,9 @@ int32_t main()
 	// int t;cin>>t;while(t--)
 	{
 		int i, j, k, n, m, ans = 0, cnt = 0, sum = 0;
-		cin >> n;
-		int a[n];
-		for (i = 0; i < n; i++) {
-			cin >> a[i];
-			a[i] = (a[i] < 0 ? -1 : 1);
-			if (i) a[i] *= a[i - 1];
-		}
-		int pos = 0, neg = 0;
-		mp[1] = 1;
-		for (i = 0; i < n; i++) {
-			pos += mp[a[i]];
-			neg += mp[-a[i]];
-			mp[a[i]]++;
-		}
-		cout << neg << " " << pos;
+		cin >> n >> m;
+		cnt = max(0ll, m - n);
+		cnt %= mod;
+		ans = cnt * (n % mod); ans %= mod;
 	}
 }

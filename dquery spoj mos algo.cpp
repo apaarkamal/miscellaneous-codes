@@ -19,15 +19,6 @@ void __f(const char* names, Arg1&& arg1, Args&&... args) {
     const char* comma = strchr(names + 1, ',');
     cerr.write(names, comma - names) << " : " << arg1 << " | "; __f(comma + 1, args...);
 }
-void the_martian() {
-    ios_base:: sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    freopen("debug.txt", "w", stderr);
-#endif
-}
 
 const int N = 1000005, M = 33;
 
@@ -44,7 +35,6 @@ int cnt[N];
 
 int32_t main()
 {
-    the_martian();
     // int t;cin>>t;while(t--)
     {
         int i, j, k, n, m, ans = 0, sum = 0;
