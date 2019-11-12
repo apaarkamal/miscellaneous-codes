@@ -1,33 +1,29 @@
 <snippet>
 	<content><![CDATA[
-class BIT
-{
-public:
-    int a[N+1];
-    // bit.add(i,a[i]);
-    // sum=bit.sum(i);
-    void add(int x, int val)
-    {
-        x++;
-        while (x < N)
-        {
-            a[x] += val;
-            x += (x&-x);
-        }
-    }
-    int sum(int x)
-    {
-        int ret = 0;
-        x++;
-        while (x)
-        {
-            ret += a[x];
-            x -= (x&-x);
-        }
-        return ret;
-    }
-}bit;
-
+struct fenwick {
+	vector<int> fn;
+	int n;
+	void init(int _n) {
+		n = _n + 10;
+		fn.clear();fn.resize(n, 0);
+	}
+	void add(int x, int val) {
+		x++;// 1 based indexing
+		while (x <= n) {
+			fn[x] += val;
+			x += (x & (-x));
+		}
+	}
+	int sum(int x) {
+		x++;//1 basaed indexing
+		int ans = 0;
+		while (x) {
+			ans += fn[x];
+			x -= (x & (-x));
+		}
+		return ans;
+	}
+} bit;
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>fenwick</tabTrigger>

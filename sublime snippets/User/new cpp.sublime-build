@@ -1,6 +1,36 @@
+<snippet>
+	<content><![CDATA[
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define int long long int
+#define ld long double
+#define F first
+#define S second
+#define P pair<int,int>
+#define pb push_back
+
+const int N = 100005;
+
+int32_t main()
 {
-"cmd": ["g++.exe","-std=c++14", "${file}", "-o", "${file_base_name}.exe", "&&" , "${file_base_name}.exe<input.txt>output.txt"],
-"shell":true,
-"working_dir":"$file_path",
-"selector":"source.cpp"
+    ios_base:: sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    // int t;cin>>t;while(t--)
+    {
+        int i,j,k,n,m,ans=0,cnt=0,sum=0;
+        cin>>n;
+        int a[n];
+        for(i=0;i<n;i++) {
+            cin>>a[i];
+        }
+
+    }
 }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>new</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,34 +1,33 @@
-#include<bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
+/* Apaar */
 
-#define ll long long int
-#define F first
-#define S second
-#define pb push_back
+#include<bits/stdc++.h>
 
 using namespace std;
-using namespace __gnu_pbds;
 
-typedef tree<ll, null_type, less<ll>, rb_tree_tag,
-        tree_order_statistics_node_update>
-        new_data_set;
+#define int long long int
+#define ld long double
+#define F first
+#define S second
+#define P pair<int,int>
+#define pb push_back
 
-const ll N = 100005;
+const int N = 100005;
 
-int main()
+mt19937_64 rnd(228);
+
+int32_t main()
 {
     ios_base:: sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    ll n, m, i, j;
-    string s = "BW";
-    n = 2000; m = 2000;
-    cout << n << " " << m << '\n';
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < m; j++) {
-            cout << s[rand() % 2];
+    // int t;cin>>t;while(t--)
+    {
+        int i, j, k, n, m, ans = 0, cnt = 0, sum = 0;
+        int t = 1e6;
+        cout << t << '\n';
+        for (i = 0; i < t; i++) {
+            n = rnd();
+            cout << abs(n % 997) << '\n';
         }
-        cout << '\n';
+
     }
-    return 0;
 }

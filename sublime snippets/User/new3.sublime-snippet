@@ -1,0 +1,53 @@
+<snippet>
+	<content><![CDATA[
+#include <iostream>
+#include <iomanip>
+#include <cassert>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <map>
+#include <set>
+#include <queue>
+#include <stack>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <stdio.h>
+#include <math.h>
+#include <bitset>
+#include <unordered_map>
+
+using namespace std;
+
+#define int long long int
+#define ld long double
+#define F first
+#define S second
+#define P pair<int,int>
+#define pb push_back
+
+const int N = 100005;
+
+int32_t main()
+{
+	ios_base:: sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	// int t;cin>>t;while(t--)
+	{
+		int i, j, k, n, m, ans = 0, cnt = 0, sum = 0;
+		cin >> n;
+		int a[n];
+		for (i = 0; i < n; i++) {
+			cin >> a[i];
+		}
+
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>new</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
